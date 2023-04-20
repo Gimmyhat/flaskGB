@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Article details
+{% endblock %}
+{% block body %}
+    <h1>
+        {{ context.title }}
+    </h1>
+    <br>
+    {{ context.text }}
+    <br>
+    <a href="{{ url_for('user.get_user', pk=context.id) }}">{{ context.author }}</a>
+{% endblock %}
