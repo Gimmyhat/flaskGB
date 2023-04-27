@@ -5,10 +5,10 @@
 {% endblock %}
 {% block body %}
     <h1>
-        {{ context.title }}
+        {{ title }}
     </h1>
     <br>
-    {{ context.text }}
+    {{ text }}
     <br>
-    <a href="{{ url_for('user.get_user', pk=context.id) }}">{{ context.author }}</a>
+    {{ author }}
 {% endblock %}

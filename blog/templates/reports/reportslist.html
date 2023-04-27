@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Users list
+    Reports list
 {% endblock %}
 {% block body %}
-    {% for user in users %}
+    {% for report in reports %}
         <ul>
-            <a href="{{ url_for('user.profile', pk=user.id) }}">{{ user.email }}</a>
+            <li>
+                {{ report }}
+            </li>
         </ul>
     {% endfor %}
 {% endblock %}
