@@ -1,27 +1,33 @@
 import os
 from time import time
 
-from blog.models.database import db
-from blog.views.articles import articles_app
-from blog.views.auth import login_manager, auth_app
-from blog.views.users import users_app
 from flask import Flask, render_template
 from flask import g
 from flask import request
 from flask_migrate import Migrate
 from werkzeug.exceptions import BadRequest
 
+from blog.models.database import db
+from blog.security import flask_bcrypt
+from blog.views.articles import articles_app
+from blog.views.auth import login_manager, auth_app
+from blog.views.users import users_app
+
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = 'qwasaersdadafafafafaasdas'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['TEMPLATE_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 db.init_app(app)
 
 cfg_name = os.environ.get("CONFIG_NAME") or "DevConfig"
 app.config.from_object(f"blog.configs.{cfg_name}")
 
 migrate = Migrate(app, db, compare_type=True)
+
+flask_bcrypt.init_app(app)
 
 
 @app.route("/")
@@ -92,6 +98,22 @@ def power_value():
 @app.route("/divide-by-zero/")
 def do_zero_division():
     return 1 / 0
+
+
+@app.cli.command("create-admin")
+def create_admin():
+    """
+    Run in your terminal:
+    ➜ flask create-admin
+    > created admin: <User #1 'admin'>
+    """
+    from blog.models import User
+
+    admin = User(username="admin", is_staff=True)
+    admin.password = os.environ.get("ADMIN_PASSWORD") or "adminpass"
+    db.session.add(admin)
+    db.session.commit()
+    print("created admin:", admin)
 
 
 @app.errorhandler(ZeroDivisionError)
