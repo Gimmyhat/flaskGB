@@ -11,6 +11,7 @@ from blog.models.database import db
 from blog.security import flask_bcrypt
 from blog.views.articles import articles_app
 from blog.views.auth import login_manager, auth_app
+from blog.views.authors import authors_app
 from blog.views.users import users_app
 
 app = Flask(__name__)
@@ -126,6 +127,9 @@ def handle_zero_division_error(error):
 app.register_blueprint(users_app, url_prefix="/users")
 
 app.register_blueprint(articles_app, url_prefix="/articles")
+
+app.register_blueprint(authors_app, url_prefix="/authors")
+
 
 app.config["SECRET_KEY"] = "qwasaersdadafafafafaasdas"
 app.register_blueprint(auth_app, url_prefix="/")
