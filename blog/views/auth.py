@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, current_app
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-from werkzeug.exceptions import NotFound
 
-from blog.forms.user import RegistrationForm, LoginForm
-from blog.models import User
 from blog.models.database import db
+from blog.models import User
+from blog.forms.user import RegistrationForm
+from werkzeug.exceptions import NotFound
+from blog.forms.user import RegistrationForm, LoginForm
 
 auth_app = Blueprint("auth_app", __name__)
 login_manager = LoginManager()
@@ -56,18 +57,18 @@ def logout():
 @auth_app.route("/login-as/", methods=["GET", "POST"], endpoint="login-as")
 def login_as():
     if not (current_user.is_authenticated and current_user.is_staff):
-        # non-admin users should not know about this feature
+    # non-admin users should not know about this feature
         raise NotFound
-
 
 @auth_app.route("/secret")
 @login_required
 def secret_view():
     return "Super secret data"
 
-
 @auth_app.route("/register/", methods=["GET", "POST"], endpoint="register")
 def register():
+
+
     if current_user.is_authenticated:
         return redirect("index")
     error = None
