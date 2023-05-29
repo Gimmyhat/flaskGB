@@ -13,8 +13,12 @@ from blog.views.articles import articles_app
 from blog.views.auth import login_manager, auth_app
 from blog.views.authors import authors_app
 from blog.views.users import users_app
+from blog.admin import admin
+
 
 app = Flask(__name__)
+
+admin.init_app(app)
 
 app.config["SECRET_KEY"] = 'qwasaersdadafafafafaasdas'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"

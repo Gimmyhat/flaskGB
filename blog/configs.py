@@ -1,5 +1,7 @@
 import os
 
+FLASK_ADMIN_SWATCH = 'cosmo'
+
 
 class BaseConfig(object):
     DEBUG = False
