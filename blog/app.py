@@ -14,10 +14,12 @@ from blog.views.auth import login_manager, auth_app
 from blog.views.authors import authors_app
 from blog.views.users import users_app
 from blog.admin import admin
+from blog.api import init_api
 
 
 app = Flask(__name__)
 
+api = init_api(app)
 admin.init_app(app)
 
 app.config["SECRET_KEY"] = 'qwasaersdadafafafafaasdas'
